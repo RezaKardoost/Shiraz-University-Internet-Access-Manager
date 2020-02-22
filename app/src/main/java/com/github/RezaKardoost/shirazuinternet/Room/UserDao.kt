@@ -9,5 +9,5 @@ interface UserDao {
     suspend fun insert(user:User)
 
     @Query("SELECT * FROM users")
-    fun getAll():LiveData<List<User>>
+    suspend fun getAll():List<User>
 }

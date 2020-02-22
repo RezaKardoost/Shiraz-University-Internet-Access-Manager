@@ -3,7 +3,7 @@ package com.github.RezaKardoost.shirazuinternet
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -25,17 +25,30 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        model.accounts.observe(this, Observer {
+            if (accountsRecyclerView.adapter == null){
+                initialRecyclerView(it)
+            }else{
+                (accountsRecyclerView.adapter as AccountsRecyclerViewAdapter).update(it)
+            }
+
+        })
+
+        model.isLoading.observe(this, Observer {
+            loadingView.isRefreshing = it
+        })
+
         addFab.setOnClickListener {
             showBottomSheet()
         }
 
-        model.accounts.observe(this, Observer {
-            //Toast.makeText(this@MainActivity,it[0].userName,Toast.LENGTH_SHORT).show()
-        })
+        loadingView.setOnRefreshListener {
+            model.getOrUpdateAccounts()
+        }
 
     }
 
-    fun showBottomSheet(){
+    private fun showBottomSheet(){
         val bottomSheetView = View.inflate(this,R.layout.add_account_bottomsheet,null)
         val addAccountBTN = bottomSheetView.findViewById<Button>(R.id.addAccount)
         val username = bottomSheetView.findViewById<EditText>(R.id.username)
@@ -51,9 +64,16 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            model.addNewAccount(newUser)
+            model.addNewUser(newUser)
+            model.getOrUpdateAccounts()
             bottomSheetDialog.dismiss()
         }
+    }
+
+    private fun initialRecyclerView(accounts: List<Account>) {
+
+        accountsRecyclerView.adapter = AccountsRecyclerViewAdapter(accounts)
+
     }
 
 

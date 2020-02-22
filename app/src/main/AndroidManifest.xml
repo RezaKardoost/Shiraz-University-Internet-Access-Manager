@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.github.RezaKardoost.shirazuinternet">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".ShirazUInternet"
         android:allowBackup="true"
