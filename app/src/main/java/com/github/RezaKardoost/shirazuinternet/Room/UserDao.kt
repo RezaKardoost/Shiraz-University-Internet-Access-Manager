@@ -9,5 +9,8 @@ interface UserDao {
     suspend fun insert(user:User)
 
     @Query("SELECT * FROM users")
-    suspend fun getAll():List<User>
+    suspend fun getAll():MutableList<User>
+
+    @Query("DELETE FROM users WHERE userName=:username")
+    suspend fun remove(username:String)
 }

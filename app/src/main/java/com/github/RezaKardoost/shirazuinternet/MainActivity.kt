@@ -3,21 +3,21 @@ package com.github.RezaKardoost.shirazuinternet
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.github.RezaKardoost.shirazuinternet.Room.User
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),AccountsRecyclerViewAdapter.OnItemListener {
 
-    private val model: MainViewModel by viewModels()
+    private val model: MainActivityViewModel by viewModels()
 
 
 
@@ -36,6 +36,12 @@ class MainActivity : AppCompatActivity() {
 
         model.isLoading.observe(this, Observer {
             loadingView.isRefreshing = it
+        })
+
+        model.networkError.observe(this, Observer {
+            it.getContentIfNotHandled()?.let {message ->
+                Toast.makeText(this@MainActivity,message,Toast.LENGTH_LONG).show()
+            }
         })
 
         addFab.setOnClickListener {
@@ -65,20 +71,24 @@ class MainActivity : AppCompatActivity() {
             }
 
             model.addNewUser(newUser)
-            model.getOrUpdateAccounts()
             bottomSheetDialog.dismiss()
         }
     }
 
-    private fun initialRecyclerView(accounts: List<Account>) {
+    private fun initialRecyclerView(accounts: MutableList<Account>) {
 
-        accountsRecyclerView.adapter = AccountsRecyclerViewAdapter(accounts)
+        accountsRecyclerView.adapter = AccountsRecyclerViewAdapter(accounts,this)
+        accountsRecyclerView.addItemDecoration(DividerItemDecoration(this,DividerItemDecoration.VERTICAL))
 
     }
 
 
     override fun attachBaseContext(newBase: Context?) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase))
+    }
+
+    override fun remove(username: String) {//remove recycler item
+        model.removeUser(username)
     }
 }
 

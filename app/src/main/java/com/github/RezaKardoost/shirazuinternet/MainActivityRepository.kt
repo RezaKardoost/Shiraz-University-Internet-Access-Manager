@@ -1,7 +1,6 @@
 package com.github.RezaKardoost.shirazuinternet
 
 import android.app.Application
-import android.util.Log
 import com.github.RezaKardoost.shirazuinternet.Room.AccountsDatabase
 import com.github.RezaKardoost.shirazuinternet.Room.User
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -9,13 +8,12 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
-import kotlin.math.log
 
 
-class MainRepository(application: Application) {
+class MainActivityRepository(application: Application) {
     private val dbInstance = AccountsDatabase.getInstance(application)
 
-    suspend fun getAllUsers(): List<User> {
+    suspend fun getAllUsers(): MutableList<User> {
         return dbInstance.userDao().getAll()
     }
 
@@ -23,7 +21,11 @@ class MainRepository(application: Application) {
         dbInstance.userDao().insert(user)
     }
 
-    suspend fun getPages(users:List<User>):List<Document> =
+    suspend fun removeUser(username: String){
+        dbInstance.userDao().remove(username)
+    }
+
+    suspend fun getPages(users:MutableList<User>):MutableList<Document> =
         suspendCancellableCoroutine {  continuation ->
 
             val pages = mutableListOf<Document>()
@@ -45,16 +47,20 @@ class MainRepository(application: Application) {
 
         }
 
-    fun getAccounts(pages:List<Document>):List<Account>{
+    fun getAccounts(
+        pages: MutableList<Document>,
+        users: MutableList<User>
+    ):MutableList<Account>{
         val accounts = mutableListOf<Account>()
-        for (p in pages){
+        for (i in 0..pages.lastIndex){
+            val p = pages[i]
             if (p.title() != "IBSng | ورود به سیستم"){
 
                 val account = Account()
                 account.isLogin = true
 
                 account.username = p.getElementsByClass("Form_Content_Row_Right_2Col_light")[0].text()
-                account.capacity = correctCredit(p.getElementsByClass("Form_Content_Row_Right_2Col_light")[1].text())
+                account.credit = correctCredit(p.getElementsByClass("Form_Content_Row_Right_2Col_light")[1].text())
 
                 accounts.add(account)
 
@@ -62,6 +68,7 @@ class MainRepository(application: Application) {
 
                 val account = Account()
                 account.isLogin = false
+                account.username = users[i].userName
                 accounts.add(account)
 
             }

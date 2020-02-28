@@ -1,9 +1,9 @@
 package com.github.RezaKardoost.shirazuinternet;
 
 public class Account {
-    private boolean isLogin;
+    private boolean isLogin;//true if login was successful
     private String username;
-    private Float capacity;
+    private Float credit;
 
     public String getUsername() {
         return username;
@@ -13,12 +13,12 @@ public class Account {
         this.username = username;
     }
 
-    public Float getCapacity() {
-        return capacity;
+    public Float getCredit() {
+        return credit;
     }
 
-    public void setCapacity(Float capacity) {
-        this.capacity = capacity;
+    public void setCredit(Float credit) {
+        this.credit = credit;
     }
 
 
