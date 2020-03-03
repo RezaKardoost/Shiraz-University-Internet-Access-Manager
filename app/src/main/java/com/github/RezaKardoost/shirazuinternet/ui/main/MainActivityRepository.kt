@@ -1,6 +1,7 @@
-package com.github.RezaKardoost.shirazuinternet
+package com.github.RezaKardoost.shirazuinternet.ui.main
 
 import android.app.Application
+import com.github.RezaKardoost.shirazuinternet.Account
 import com.github.RezaKardoost.shirazuinternet.Room.AccountsDatabase
 import com.github.RezaKardoost.shirazuinternet.Room.User
 import kotlinx.coroutines.suspendCancellableCoroutine

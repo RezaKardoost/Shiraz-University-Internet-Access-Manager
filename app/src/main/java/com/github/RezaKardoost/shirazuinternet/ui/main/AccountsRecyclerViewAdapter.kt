@@ -1,4 +1,4 @@
-package com.github.RezaKardoost.shirazuinternet
+package com.github.RezaKardoost.shirazuinternet.ui.main
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,8 +6,10 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.github.RezaKardoost.shirazuinternet.Account
+import com.github.RezaKardoost.shirazuinternet.R
 
-class AccountsRecyclerViewAdapter(var accounts:MutableList<Account>,var onItemListener:OnItemListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class AccountsRecyclerViewAdapter(var accounts:MutableList<Account>, var onItemListener: OnItemListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val IS_LOGIN_TYPE = 0
     val IS_NOT_LOGIN_TYPE = 1
@@ -19,8 +21,9 @@ class AccountsRecyclerViewAdapter(var accounts:MutableList<Account>,var onItemLi
 
         init {
             removeAccount.setOnClickListener {
-                onItemListener.remove(accounts[adapterPosition].username)
+                val tobeRemovedUsername = accounts[adapterPosition].username
                 accounts.removeAt(adapterPosition)
+                onItemListener.remove(tobeRemovedUsername)
                 notifyItemRemoved(adapterPosition)
             }
         }
@@ -33,8 +36,9 @@ class AccountsRecyclerViewAdapter(var accounts:MutableList<Account>,var onItemLi
 
         init {
             removeAccount.setOnClickListener {
-                onItemListener.remove(accounts[adapterPosition].username)
+                val tobeRemovedUsername = accounts[adapterPosition].username
                 accounts.removeAt(adapterPosition)
+                onItemListener.remove(tobeRemovedUsername)
                 notifyItemRemoved(adapterPosition)
             }
         }

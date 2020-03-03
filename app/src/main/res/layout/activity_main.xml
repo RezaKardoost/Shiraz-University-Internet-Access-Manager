@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.main.MainActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/materialToolbar"
@@ -19,6 +19,15 @@
         <include layout="@layout/home_toolbar" />
     </com.google.android.material.appbar.MaterialToolbar>
 
+    <include
+        android:id="@+id/emptyView"
+        layout="@layout/empty"
+        app:layout_constraintTop_toBottomOf="@+id/materialToolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"/>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/loadingView"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -31,6 +40,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="invisible"
             android:id="@+id/accountsRecyclerView"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
