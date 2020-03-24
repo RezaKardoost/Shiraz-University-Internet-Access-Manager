@@ -1,21 +1,23 @@
 package com.github.RezaKardoost.shirazuinternet.ui.main
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.github.RezaKardoost.shirazuinternet.Account
 import com.github.RezaKardoost.shirazuinternet.R
 import com.github.RezaKardoost.shirazuinternet.Room.User
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
+
 
 class MainActivity : AppCompatActivity(),
     AccountsRecyclerViewAdapter.OnItemListener {
@@ -87,6 +89,7 @@ class MainActivity : AppCompatActivity(),
         val username = bottomSheetView.findViewById<EditText>(R.id.username)
         val password = bottomSheetView.findViewById<EditText>(R.id.password)
         val bottomSheetDialog = BottomSheetDialog(this)
+        bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
         bottomSheetDialog.setContentView(bottomSheetView)
         bottomSheetDialog.show()
 
